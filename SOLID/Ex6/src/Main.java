@@ -1,18 +1,24 @@
 public class Main {
     public static void main(String[] args) {
         System.out.println("=== Notification Demo ===");
+        
         AuditLog audit = new AuditLog();
+        ConsolePreview preview = new ConsolePreview();
+        SenderConfig config = new SenderConfig(); 
 
-        Notification n = new Notification("Welcome", "Hello and welcome to SST!", "riya@sst.edu", "9876543210");
+        EmailSender email = new EmailSender(audit, preview, config);
+        SmsSender sms = new SmsSender(audit, preview);
+        WhatsAppSender wa = new WhatsAppSender(audit, preview);
 
-        NotificationSender email = new EmailSender(audit);
-        NotificationSender sms = new SmsSender(audit);
-        NotificationSender wa = new WhatsAppSender(audit);
-
-        email.send(n);
-        sms.send(n);
+        Notification.Email emailMsg = new Notification.Email("Welcome", "Hello and welcome to SST!", "riya@sst.edu");
+        Notification.Sms smsMsg = new Notification.Sms("Hello and welcome to SST!", "9876543210");
+        
+        email.send(emailMsg);
+        sms.send(smsMsg);
+        
         try {
-            wa.send(n);
+            Notification.WhatsApp waMsg = new Notification.WhatsApp("Hello and welcome to SST!", "9876543210");
+            wa.send(waMsg);
         } catch (RuntimeException ex) {
             System.out.println("WA ERROR: " + ex.getMessage());
             audit.add("WA failed");

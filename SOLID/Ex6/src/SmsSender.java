@@ -1,10 +1,11 @@
-public class SmsSender extends NotificationSender {
-    public SmsSender(AuditLog audit) { super(audit); }
+public class SmsSender extends NotificationSender<Notification.Sms> {
+    public SmsSender(AuditLog audit, ConsolePreview preview) { 
+        super(audit, preview); 
+    }
 
     @Override
-    public void send(Notification n) {
-        // Ignores subject; base type doesn't clarify expectations (smell)
-        System.out.println("SMS -> to=" + n.phone + " body=" + n.body);
+    public void send(Notification.Sms n) {
+        preview.preview("SMS -> to=" + n.phone + " body=" + n.body);
         audit.add("sms sent");
     }
 }
