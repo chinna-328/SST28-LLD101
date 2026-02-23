@@ -1,3 +1,3 @@
-public interface TaxRules {
+public interface TaxPolicy {
     double getTaxPercentage();
 }
